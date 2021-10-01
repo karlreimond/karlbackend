@@ -14,15 +14,14 @@ import javax.persistence.Id;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Component
 @Entity
-
+@Component
 public class Category {
     @Id
-    @GeneratedValue
     private Long id;
+
     private String name;
-    private CategoryType category;
+    private CategoryType categoryType;
 }
 
 enum CategoryType {

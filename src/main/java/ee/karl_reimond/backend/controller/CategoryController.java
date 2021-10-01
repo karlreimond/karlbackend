@@ -1,31 +1,36 @@
 package ee.karl_reimond.backend.controller;
 
 import ee.karl_reimond.backend.model.Category;
-import ee.karl_reimond.backend.model.Category;
 import ee.karl_reimond.backend.service.CategoryService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 public class CategoryController {
 
-    @Autowired
     CategoryService categoryService;
 
-    @GetMapping("category")
-    public List<Category> getCategory() {
-        return categoryService.getCategory();
+    public CategoryController(CategoryService categoryService) {
+        this.categoryService = categoryService;
     }
 
-    //localgist;8080/category
+    @GetMapping("categories")
+    public List<Category> getCategories() {
+        return categoryService.getCategories();
+    }
 
-    @PostMapping("category")
-    public String postCategory(@RequestBody Category category) {
+    @PostMapping("categories")
+    public String saveCategory(@RequestBody Category category) {
         categoryService.saveCategory(category);
-        return "kategooria edukalt lisatud" + category.getName();
-        //annan midagi jason kujul kaasa, 3 asja peavad sama olema
+
+        return "saved: " + category.getName();
+    }
+
+    @GetMapping("categories/delete/{id}")
+    public String deleteCategory(@PathVariable Long id) {
+        String name = categoryService.getCategoryById(id).getName();
+        categoryService.deleteCategory(categoryService.getCategoryById(id));
+        return "deleted: " + name;
     }
 }
